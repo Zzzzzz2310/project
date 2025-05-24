@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>To My Love - Justine Jade</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      color: #fff;
+      text-align: center;
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px #333;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      padding: 15px 25px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 30px;
+      background-color: #ff6f91;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+      background-color: #ff4e74;
+    }
+
+    #finalMessage {
+      display: none;
+      max-width: 600px;
+      text-align: center;
+      background: white;
+      padding: 25px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      margin-top: 30px;
+      font-size: 1.2rem;
+      animation: fadeIn 2s forwards;
+    }
+
+    .heart {
+      font-size: 2rem;
+      margin-top: 20px;
+      animation: beat 1s infinite;
+      color: red;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      color: white;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Hey Love, Justine Jade 💕</h1>
+
+  <div class="button-container">
+    <button id="btn1">Click me!</button>
+    <button id="btn2">No, click me!</button>
+  </div>
+
+  <div id="finalMessage">
+    💖 Surprise! <br><br>
+    I just wanted to make you smile, even with a little prank 😉<br><br>
+    You are amazing, Love. You're stronger than you think, more beautiful than you know, and loved more than you realize.<br><br>
+    No matter how tough your day is, always remember: I’m here, cheering for you always. 💗
+    <div class="heart">❤️❤️❤️</div>
+  </div>
+
+  <div class="footer">Made with love (and pranks) for you 😘</div>
+
+  <script>
+    const btn1 = document.getElementById("btn1");
+    const btn2 = document.getElementById("btn2");
+    const finalMsg = document.getElementById("finalMessage");
+
+    // Button prank: they move away on hover
+    function moveButton(button) {
+      const x = Math.random() * 200 - 100;
+      const y = Math.random() * 200 - 100;
+      button.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    btn1.addEventListener("mouseover", () => moveButton(btn1));
+    btn2.addEventListener("mouseover", () => moveButton(btn2));
+
+    // After a few seconds, show final message
+    setTimeout(() => {
+      btn1.style.display = "none";
+      btn2.style.display = "none";
+      finalMsg.style.display = "block";
+    }, 7000); // prank lasts for 7 seconds
+  </script>
+
+</body>
+</html>
