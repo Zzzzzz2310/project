@@ -1,136 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>To My Love - Justine Jade</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Colorful Calculator</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+      background: linear-gradient(to right, #667eea, #764ba2);
       font-family: 'Segoe UI', sans-serif;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
-      overflow: hidden;
+      margin: 0;
     }
 
-    h1 {
-      color: #fff;
-      text-align: center;
-      font-size: 2.8rem;
-      margin-bottom: 20px;
-      text-shadow: 1px 1px 3px #333;
+    .calculator {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 320px;
     }
 
-    .button-container {
-      display: flex;
-      gap: 20px;
+    .display {
+      width: 100%;
+      height: 60px;
+      text-align: right;
+      font-size: 2em;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      background: #f1f1f1;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
     }
 
     button {
-      padding: 15px 25px;
-      font-size: 1rem;
+      padding: 20px;
+      font-size: 1.2em;
       border: none;
-      border-radius: 30px;
-      background-color: #ff6f91;
-      color: white;
+      border-radius: 10px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      background-color: #4CAF50;
+      color: white;
+      transition: background 0.3s;
     }
 
     button:hover {
-      background-color: #ff4e74;
+      background-color: #45a049;
     }
 
-    #finalMessage {
-      display: none;
-      max-width: 600px;
+    .operator {
+      background-color: #ff9800;
+    }
+
+    .operator:hover {
+      background-color: #e68900;
+    }
+
+    .equal {
+      background-color: #2196F3;
+      grid-column: span 2;
+    }
+
+    .equal:hover {
+      background-color: #1976d2;
+    }
+
+    .clear {
+      background-color: #f44336;
+    }
+
+    .clear:hover {
+      background-color: #d32f2f;
+    }
+
+    .message {
+      margin-top: 10px;
       text-align: center;
-      background: white;
-      padding: 25px 30px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      margin-top: 30px;
-      font-size: 1.2rem;
-      animation: fadeIn 2s forwards;
-    }
-
-    .heart {
-      font-size: 2rem;
-      margin-top: 20px;
-      animation: beat 1s infinite;
-      color: red;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes beat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-
-    .footer {
-      position: absolute;
-      bottom: 10px;
-      color: white;
-      font-size: 0.9rem;
-      opacity: 0.7;
+      font-weight: bold;
+      color: #d500f9;
     }
   </style>
 </head>
 <body>
+  <div class="calculator">
+    <input type="text" class="display" id="display" disabled>
+    <div class="buttons">
+      <button onclick="press('7')">7</button>
+      <button onclick="press('8')">8</button>
+      <button onclick="press('9')">9</button>
+      <button class="operator" onclick="press('/')">÷</button>
 
-  <h1>Hey Love, Justine Jade 💕</h1>
+      <button onclick="press('4')">4</button>
+      <button onclick="press('5')">5</button>
+      <button onclick="press('6')">6</button>
+      <button class="operator" onclick="press('*')">×</button>
 
-  <div class="button-container">
-    <button id="btn1">Click me!</button>
-    <button id="btn2">No, click me!</button>
+      <button onclick="press('1')">1</button>
+      <button onclick="press('2')">2</button>
+      <button onclick="press('3')">3</button>
+      <button class="operator" onclick="press('-')">−</button>
+
+      <button onclick="press('0')">0</button>
+      <button onclick="press('.')">.</button>
+      <button class="equal" onclick="calculate()">=</button>
+      <button class="operator" onclick="press('+')">+</button>
+
+      <button class="clear" onclick="clearDisplay()">C</button>
+    </div>
+    <div id="message" class="message"></div>
   </div>
-
-  <div id="finalMessage">
-    💖 Surprise! <br><br>
-    I just wanted to make you smile, even with a little prank 😉<br><br>
-    You are amazing, Love. You're stronger than you think, more beautiful than you know, and loved more than you realize.<br><br>
-    No matter how tough your day is, always remember: I’m here, cheering for you always. 💗
-    <div class="heart">❤️❤️❤️</div>
-  </div>
-
-  <div class="footer">Made with love (and pranks) for you 😘</div>
 
   <script>
-    const btn1 = document.getElementById("btn1");
-    const btn2 = document.getElementById("btn2");
-    const finalMsg = document.getElementById("finalMessage");
+    let expression = "";
 
-    // Button prank: they move away on hover
-    function moveButton(button) {
-      const x = Math.random() * 200 - 100;
-      const y = Math.random() * 200 - 100;
-      button.style.transform = `translate(${x}px, ${y}px)`;
+    function press(val) {
+      expression += val;
+      document.getElementById('display').value = expression;
+      document.getElementById('message').innerText = "";
     }
 
-    btn1.addEventListener("mouseover", () => moveButton(btn1));
-    btn2.addEventListener("mouseover", () => moveButton(btn2));
+    function clearDisplay() {
+      expression = "";
+      document.getElementById('display').value = "";
+      document.getElementById('message').innerText = "";
+    }
 
-    // After a few seconds, show final message
-    setTimeout(() => {
-      btn1.style.display = "none";
-      btn2.style.display = "none";
-      finalMsg.style.display = "block";
-    }, 7000); // prank lasts for 7 seconds
+    function calculate() {
+      try {
+        let result = eval(expression);
+        document.getElementById('display').value = result;
+        expression = result.toString();
+        if (result == 28) {
+          document.getElementById('message').innerText = "I miss you ❤️";
+        } else {
+          document.getElementById('message').innerText = "";
+        }
+      } catch (e) {
+        document.getElementById('display').value = "Error";
+        expression = "";
+      }
+    }
   </script>
-
 </body>
 </html>
